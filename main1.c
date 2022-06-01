@@ -68,7 +68,14 @@ NeuralNetwork *init_network() {
     }
     return nn;
 }
-
+; This is the forward function for a neural network. The function takes in the neural network, 
+ an input, and an output. The function then creates an array called a1 which is the size of the hidden layer. 
+  The function then loops through the hidden layer and calculates the value at each node. 
+  The value is calculated by taking the bias at that node, adding the product of each weight and input, 
+ and then running it through a sigmoid function. The output of the hidden layer is then stored in the output array.
+ 
+ 
+ 
 void forward(NeuralNetwork *nn, double *input, double *output) {
     int i, j;
     double a1[HIDDEN_SIZE];
@@ -80,6 +87,16 @@ void forward(NeuralNetwork *nn, double *input, double *output) {
        a1[i] = 1 / (1 + pow(e, -a1[i]));  
     }
     
+ 
+ 
+ 
+ ; This is the activation function for the output layer. 
+  The activation function is 1 / (1 + pow(e, -output[i])). This is the sigmoid function.
+  This for loop is iterating through the output layer. 
+   The output at each node is equal to the bias of the node plus the sum of each weight 
+   times the activation of the node in the previous layer. 
+   Finally, the output is passed through an activation function.
+   
     for (i = 0; i < OUTPUT_SIZE; i++) {
         output[i] = nn->b2[i];
         for (j = 0; j < HIDDEN_SIZE; j++) {
@@ -89,6 +106,9 @@ void forward(NeuralNetwork *nn, double *input, double *output) {
     }
 }
 
+ 
+ 
+ 
 void train(NeuralNetwork *nn, double *input, double *target, double learning_rate) {
     int i, j;
     double output[OUTPUT_SIZE];
@@ -100,11 +120,25 @@ void train(NeuralNetwork *nn, double *input, double *target, double learning_rat
     
     forward(nn, input, output);
     
+ ; The for loop iterates through the output array
+; The error variable stores the value of the difference between the target and output arrays
+; The delta2 variable stores the value of the output array minus the target array
+ 
     for (i = 0; i < OUTPUT_SIZE; i++) {
         error = error + 0.5 * pow((target[i] - output[i]), 2);
         delta2[i] = output[i] - target[i];
+     
+     
     }
     
+ 
+ ; This is the first layer of the neural network. 
+  The purpose of this layer is to take in the input values and pass them through to the next layer. 
+  The 'for' loop is iterating through each node in the hidden layer, 
+ and the 'if' statement is checking to see if the node is connected to the input node. 
+  If it is, it will take the weight of the connection and multiply it by the input value.
+  
+  
     for (i = 0; i < HIDDEN_SIZE; i++) {
         a1[i] = nn->b1[i];
         for (j = 0; j < INPUT_SIZE; j++) {
@@ -113,6 +147,14 @@ void train(NeuralNetwork *nn, double *input, double *target, double learning_rat
         a1[i] = 1 / (1 + pow(e, -a1[i]));
     }
     
+ ;
+ 
+ ;This for loop is for backpropagation. 
+  The first for loop is for the hidden layer weights and the second for loop is for the output layer weights. 
+   The delta1 array is for the hidden layer and the delta2 array is for the output layer. 
+    The a1 array is for the hidden layer activation and the a2 array is for the output layer activation.
+     
+     
     for (i = 0; i < HIDDEN_SIZE; i++) {
         delta1[i] = 0;
         for (j = 0; j < OUTPUT_SIZE; j++) {
@@ -120,23 +162,47 @@ void train(NeuralNetwork *nn, double *input, double *target, double learning_rat
         }
         delta1[i] *= a1[i] * (1 - a1[i]);
     }
-    
+  ; This code is implementing the backpropagation algorithm. 
+   The outer for loop is iterating through the input neurons, and the inner for loop is iterating through the hidden layer neurons. 
+    For each input-hidden neuron pair, the code is adjusting the weight between them according to the backpropagation formula:
+weight = weight - (learning rate * input * delta)
+where delta is the error gradient for the neuron in the hidden layer.  
+
+ 
+ 
     for (i = 0; i < INPUT_SIZE; i++) {
          for (j = 0; j < HIDDEN_SIZE; j++) {
             nn->w1[i][j] -= learning_rate * input[i] * delta1[j];
          }
     }
     
-    for (i = 0; i < HIDDEN_SIZE; i++) {
+ ;
+ ; The code above is iterating through the hidden layer weights 
+  and updating them based on the learning rate and the corresponding delta value.
+  
+  for (i = 0; i < HIDDEN_SIZE; i++) {
         nn->b1[i] -= learning_rate * delta1[i];
     }
     
-    for (i = 0; i < HIDDEN_SIZE; i++) {
+ ;
+; The code above iterates through the hidden layer and the output layer. 
+ For each node in the hidden layer, it subtracts the learning rate 
+ multiplied by the activation of that node in the hidden layer and the error in the output layer. 
+ This gives us the new weight for each node in the hidden layer. 
+ 
+  
+  for (i = 0; i < HIDDEN_SIZE; i++) {
         for (j = 0; j < OUTPUT_SIZE; j++) {
             nn->w2[i][j] -= learning_rate * a1[i] * delta2[j];
         }
     }
-    
+   
+ ; 
+ 
+ ; The first line of code is a for loop that iterates through the entire array of output values. 
+  The second line subtracts the learning rate from the output value. 
+  The third line prints the error value to the console.
+ 
     for (i = 0; i < OUTPUT_SIZE; i++) {
         nn->b2[i] -= learning_rate * delta2[i];
     }
@@ -144,18 +210,27 @@ void train(NeuralNetwork *nn, double *input, double *target, double learning_rat
     printf("error: %f\n", error);
 }
 
+; 
+ 
+
 int main() {
+    //this is the main function of the program that contains all the other functions
     int i;
+    //i is defined as an integer
     double input[INPUT_SIZE];
     double target[OUTPUT_SIZE];
+    //input and target are both defined as double arrays of size INPUT_SIZE and OUTPUT_SIZE
     NeuralNetwork *nn = init_network();
+    //nn is defined as a pointer to a NeuralNetwork struct and is initialized
     for (i = 0; i < INPUT_SIZE; i++) {
         input[i] = 0;
     }
     target[0] = 1;
+    //the input and target arrays are both set to 0 and 1 respectively
     while (1) {
         train(nn, input, target, 0.3);
         getchar();
     }
+    //the train function is called with the nn, input, target, and 0.3 parameters and the getchar function is also called
     return 0;
 } 
