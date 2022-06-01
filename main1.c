@@ -24,15 +24,15 @@ NeuralNetwork *init_network() {
 
   
   
-;The code is randomly initializing the weights of the first layer of a neural network.explain each line
-;int i, j;
-;This line declares two variables, i and j, which will be used as counters in the for loops.
-;for (i = 0; i < INPUT_SIZE; i++) {
-;This for loop will iterate through all of the inputs in the neural network.
-;for (j = 0; j < HIDDEN_SIZE; j++) {
-;This for loop will iterate through all of the hidden neurons in the neural network.
-;nn->w1[i][j] = ((double) rand() / RAND_MAX) * 2 - 1;
-;This line sets the weight between the input neuron at index i and the hidden neuron at index j to a random value between -1 and 1.
+; The code is randomly initializing the weights of the first layer of a neural network.explain each line
+; int i, j;
+; This line declares two variables, i and j, which will be used as counters in the for loops.
+; for (i = 0; i < INPUT_SIZE; i++) {
+; This for loop will iterate through all of the inputs in the neural network.
+; for (j = 0; j < HIDDEN_SIZE; j++) {
+; This for loop will iterate through all of the hidden neurons in the neural network.
+; nn->w1[i][j] = ((double) rand() / RAND_MAX) * 2 - 1;
+; This line sets the weight between the input neuron at index i and the hidden neuron at index j to a random value between -1 and 1.
   
   
   
