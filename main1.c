@@ -42,8 +42,12 @@ NeuralNetwork *init_network() {
             nn->w1[i][j] = ((double) rand() / RAND_MAX) * 2 - 1;
         }
     }
- 
-  
+; this is for loop which iterates for every node in hidden layer
+; initialize bias of hidden layer nodes to 0
+; for every hidden layer node, we have to initialize weights for every node in output layer
+; the weights are initialized randomly between -1 and 1
+ ;
+ ; 
   
     for (i = 0; i < HIDDEN_SIZE; i++) {
         nn->b1[i] = 0;
@@ -51,6 +55,14 @@ NeuralNetwork *init_network() {
             nn->w2[i][j] = ((double) rand() / RAND_MAX) * 2 - 1;
         }
     }
+ ; This line is creating a for loop that is going to iterate through the output size. 
+ ; The output size is going to be the number of neurons in the second layer. 
+ ; The variable i is going to be used as the iterator in this for loop. 
+ ; The initial value of i will be 0 and will be incremented by 1 until it reaches the output size. 
+ ; The purpose of this loop is to initialize the array of biases for the second layer of the neural network. 
+ ; The array of biases is going to be set to 0 for all of the neurons in the second layer.
+ 
+ 
     for (i = 0; i < OUTPUT_SIZE; i++) {
         nn->b2[i] = 0;
     }
