@@ -1,11 +1,6 @@
- 
-
 #include <stdio.h>
-
- 
 #include <stdlib.h>
 #include <math.h>
-
 #define INPUT_SIZE 784
 #define HIDDEN_SIZE 128
 #define OUTPUT_SIZE 10
